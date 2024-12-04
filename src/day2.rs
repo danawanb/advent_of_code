@@ -39,7 +39,7 @@ pub fn day_two() -> i32 {
                 //println!("{:?} {}", temp, res_map); // Cetak hasil
             }
         }
-        println!("{:?} {}", i, res_map);
+        //println!("{:?} {}", i, res_map);
         if res_map == true {
             count += 1
         }
