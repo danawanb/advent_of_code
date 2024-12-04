@@ -9,6 +9,8 @@ fn main() {
     let he = day2::day_two();
     println!("{}", he);
 
-    let three = day3::day_three();
+    //let three = day3::day_three();
+    let three = day3::day_tree_part_two();
+
     println!("{}", three);
 }
