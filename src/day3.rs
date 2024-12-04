@@ -191,7 +191,7 @@ pub fn day_tree_part_two() -> i32 {
         }
     }
 
-    println!("{:?}", sum_col_before);
+    //println!("{:?}", sum_col_before);
 
     let mut sum_col: Vec<Point> = Vec::new();
     for i in sum_col_before {
@@ -223,5 +223,5 @@ pub fn day_tree_part_two() -> i32 {
 
     println!("{}", hitung);
 
-    32
+    return hitung;
 }
