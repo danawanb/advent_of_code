@@ -2,6 +2,7 @@ mod day1;
 mod day2;
 mod day3;
 mod day4;
+mod day5;
 
 fn main() {
     let ha = day1::day_one();
@@ -22,4 +23,7 @@ fn main() {
 
     let fourxx = day4::day_four_chapter_two();
     println!("{}", fourxx);
+
+    let five = day5::day_five_chapter_one();
+    println!("{}", five);
 }
