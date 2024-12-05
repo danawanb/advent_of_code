@@ -1,5 +1,9 @@
 use std::{fs, isize, usize};
 
+fn count_substring_occurrences(haystack: &str, needle: &str) -> usize {
+    haystack.match_indices(needle).count()
+}
+
 pub fn day_four_chapter_one() -> i32 {
     //dummy benar real salah
 
@@ -33,14 +37,13 @@ pub fn day_four_chapter_one() -> i32 {
 
     //hitung horizontal
     for i in &matrix {
-        if i.concat().contains("XMAS") {
-            count += 1;
-        }
-        if i.concat().contains("SAMX") {
-            count += 1;
-        }
+        let ccount = count_substring_occurrences(&i.concat(), "XMAS");
+        count += ccount as i32;
+
+        let ccount = count_substring_occurrences(&i.concat(), "SAMX");
+        count += ccount as i32;
     }
-    println!("horizontal {}", count);
+    //println!("horizontal {}", count);
 
     let iter = (0..rows).map(|row_idx| matrix.iter().flatten().skip(row_idx).step_by(columns));
 
@@ -55,14 +58,13 @@ pub fn day_four_chapter_one() -> i32 {
     //hitung vertical
     let mut vert: i32 = 0;
     for i in &matrixx {
-        if i.concat().contains("XMAS") {
-            vert += 1;
-            count += 1;
-        }
-        if i.concat().contains("SAMX") {
-            vert += 1;
-            count += 1;
-        }
+        let ccount = count_substring_occurrences(&i.concat(), "XMAS");
+        count += ccount as i32;
+        vert += ccount as i32;
+
+        let ccount = count_substring_occurrences(&i.concat(), "SAMX");
+        count += ccount as i32;
+        vert += ccount as i32;
     }
 
     let mut diago: Vec<Vec<String>> = Vec::new();
@@ -74,7 +76,7 @@ pub fn day_four_chapter_one() -> i32 {
         for j in 0..columns {
             let index = i + j as isize;
             if index >= 0 && index < rows as isize {
-                group.push(matrixx[j][index as usize].clone());
+                group.push(matrix[j][index as usize].clone());
             }
         }
         diago.push(group);
@@ -84,14 +86,15 @@ pub fn day_four_chapter_one() -> i32 {
     let mut rdiago: i32 = 0;
 
     for i in &diago {
-        if i.concat().contains("XMAS") {
-            rdiago += 1;
-            count += 1;
-        }
-        if i.concat().contains("SAMX") {
-            rdiago += 1;
-            count += 1;
-        }
+        println!("{:?}", i);
+
+        let ccount = count_substring_occurrences(&i.concat(), "XMAS");
+        count += ccount as i32;
+        rdiago += ccount as i32;
+
+        let ccount = count_substring_occurrences(&i.concat(), "SAMX");
+        count += ccount as i32;
+        rdiago += ccount as i32;
     }
 
     let mut leftdiago: Vec<Vec<String>> = Vec::new();
@@ -103,27 +106,26 @@ pub fn day_four_chapter_one() -> i32 {
         for j in 0..rows {
             let index = i - j as isize;
             if index >= 0 && index < rows as isize {
-                group.push(matrixx[j][index as usize].clone());
+                group.push(matrix[j][index as usize].clone());
             }
         }
         leftdiago.push(group);
     }
 
-    println!("{:?}", diago);
-    println!("{:?}", leftdiago);
+    //println!("{:?}", diago);
+    //println!("{:?}", leftdiago);
 
     //hitung ldiagonal
     let mut ldiago: i32 = 0;
 
     for i in &leftdiago {
-        if i.concat().contains("XMAS") {
-            ldiago += 1;
-            count += 1;
-        }
-        if i.concat().contains("SAMX") {
-            ldiago += 1;
-            count += 1;
-        }
+        let ccount = count_substring_occurrences(&i.concat(), "XMAS");
+        count += ccount as i32;
+        ldiago += ccount as i32;
+
+        let ccount = count_substring_occurrences(&i.concat(), "SAMX");
+        count += ccount as i32;
+        ldiago += ccount as i32;
     }
 
     println!("vertical {vert}");
@@ -131,7 +133,8 @@ pub fn day_four_chapter_one() -> i32 {
     println!("ldiago {ldiago}");
     //println!("{:?}", matrixx);
     println!("total  : {count}");
-    69
+
+    count
 }
 
 pub fn count_xmas() -> i32 {
@@ -140,10 +143,12 @@ pub fn count_xmas() -> i32 {
     let txt = fs::read_to_string("./src/day4.txt").expect("File not found");
     let txt_str: Vec<String> = txt.lines().map(|line| line.to_string()).collect();
 
+    //buat matrix dari txt str
     let matrix: Vec<Vec<char>> = txt_str.iter().map(|line| line.chars().collect()).collect();
 
     let mut count = 0;
 
+    //hitung kata
     fn count_word(matrix: &[Vec<char>], word: &str, dx: isize, dy: isize) -> i32 {
         let rows = matrix.len();
         let cols = matrix[0].len();
