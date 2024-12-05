@@ -1,9 +1,134 @@
-use std::{fs, isize, usize};
+use std::{fmt::format, fs, isize, usize};
 
 fn count_substring_occurrences(haystack: &str, needle: &str) -> usize {
     haystack.match_indices(needle).count()
 }
 
+pub fn day_four_chapter_two() -> i32 {
+    let txt = fs::read_to_string("./src/day4.txt");
+
+    let mut txt_str: Vec<String> = Vec::new();
+    if let Ok(val) = txt {
+        for (_, s) in val.lines().enumerate() {
+            txt_str.push(s.to_string());
+        }
+    }
+
+    let columns = txt_str.len();
+    let rows = txt_str[0].len();
+
+    println!("columns {columns} rows {rows}");
+
+    let mut matrix: Vec<Vec<String>> = vec![vec![String::from("-"); columns]; rows];
+
+    for (ids, s) in txt_str.iter().enumerate() {
+        let char_vec: Vec<char> = s.chars().collect();
+        for (idc, c) in char_vec.iter().enumerate() {
+            //println!("{} {} {}", ids, idc, c);
+            matrix[ids][idc] = c.to_string();
+        }
+    }
+    
+    let mut xmas_the_spot : Vec<Xmas> = Vec::new();
+
+    for (i, vali) in matrix.iter().enumerate() {
+        //println!("{:?}", i);
+        for (j, valj) in vali.iter().enumerate() {
+            //println!("{} {}", i, j);
+            if i > 0 && j > 0 {
+                //indeks terakhir tidak dianggap baik col terakhir atau row terakhir
+                if j + 1 == vali.len() || i + 1 == vali.len() {
+                    break;
+                }
+
+                //tentukan indeks maksimal agar tidak di luar bidang
+                let maks = j + 1;
+                //if j + 1 > vali.len() - 1 {
+                //   maks = vali.len() - 1
+                //}
+
+                if matrix[i][j] == "A" {
+                    let kiri_atas = matrix[i - 1][j - 1].clone();
+                    let kanan_atas = matrix[i - 1][j + 1].clone();
+                    let kiri_bawah = matrix[i + 1][j - 1].clone();
+                    let kanan_bawah = matrix[i + 1][j + 1].clone();
+
+                    if kiri_atas == "M" || kiri_atas == "S" {
+                            println!("{} {} kiri atas {:?} tengah{:?} kanan atas{:?} kiri bawah {:?} kanan bawah {:?}",
+                            i,
+                            j,
+                            kiri_atas,
+                            matrix[i][j],
+                            kanan_atas,
+                            matrix[i + 1][j - 1],
+                            matrix[i + 1][j + 1]
+                        
+                            );
+                            let single_mat = Xmas {
+                                    kiri_atas: kiri_atas.clone(), 
+                                    kanan_atas: kanan_atas.clone(), 
+                                    kiri_bawah: kiri_bawah.clone(), 
+                                    kanan_bawah: kanan_bawah.clone(),
+                                    point: format!("{:?} {i}{j}", matrix[i][j]),
+                                    store: vec![kiri_atas.clone(), kanan_atas.clone(), kiri_bawah.clone(), kanan_bawah.clone()].to_vec()
+                            };
+                            xmas_the_spot.push(single_mat);
+                            }
+                }
+            }
+        }
+    }
+
+    println!("{:?}", xmas_the_spot);
+    
+    let mut countx = 0;
+    for xmas in xmas_the_spot {
+        if xmas.valid() {
+            countx += 1;
+            println!("xmas {:?} point {:?}", xmas.store, xmas.point); 
+        }
+    }
+    countx
+}
+
+#[derive(Debug)]
+struct Xmas {
+    kiri_atas : String,
+    kanan_atas : String,
+    kiri_bawah : String,
+    kanan_bawah: String,
+    point : String,
+    store : Vec<String>
+}
+
+impl Xmas {
+    fn valid(&self) -> bool {
+        let mut s_count = 0;
+        
+        if self.kiri_atas == self.kanan_bawah {
+            return false;
+        }
+
+        for r in &self.store {
+            if r == "X" || r == "A" {
+                return false
+            }
+
+            if r == "S" {
+                s_count += 1;
+            }
+
+        }
+        
+        if s_count == 2 {
+            return true
+        } else {
+            return  false
+        };
+
+
+    }
+}
 pub fn day_four_chapter_one() -> i32 {
     //dummy benar real salah
 
@@ -86,7 +211,7 @@ pub fn day_four_chapter_one() -> i32 {
     let mut rdiago: i32 = 0;
 
     for i in &diago {
-        println!("{:?}", i);
+        //println!("{:?}", i);
 
         let ccount = count_substring_occurrences(&i.concat(), "XMAS");
         count += ccount as i32;

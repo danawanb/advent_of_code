@@ -19,4 +19,7 @@ fn main() {
     let fourx = day4::count_xmas();
 
     println!("{} {}", four, fourx);
+
+    let fourxx = day4::day_four_chapter_two();
+    println!("{}", fourxx);
 }
