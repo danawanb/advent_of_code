@@ -91,11 +91,11 @@ pub fn day_five_chapter_one() -> i32 {
         fixx_order.push(res);
     }
 
-    println!("{:?}", fixx_order);
+    //println!("{:?}", fixx_order);
 
     let mut sumxx: i32 = 0;
     for v in fixx_order {
-        println!("{:?}", v[v.len() / 2]);
+        //println!("{:?}", v[v.len() / 2]);
         sumxx += v[v.len() / 2];
     }
 
