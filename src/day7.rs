@@ -10,8 +10,6 @@ pub fn day_seven() -> i64 {
         texts = valx;
     }
 
-    //println!("{:?}", texts);
-
     let mut point: Vec<Point> = Vec::new();
 
     for (idx, i) in texts.iter().enumerate() {
@@ -22,7 +20,6 @@ pub fn day_seven() -> i64 {
             let sumxx: Vec<&str> = i.split(":").collect();
             if let Some(x) = sumxx.get(0) {
                 sumx = x.parse().expect("gagal konvert sum {idx}");
-                //println!("{}", x);
             }
 
             if let Some(y) = sumxx.get(1) {
@@ -47,9 +44,13 @@ pub fn day_seven() -> i64 {
     let operation = [add, multiple];
 
     let mut point_final: Vec<Point> = Vec::new();
+
+    let mut point_secod: Vec<Point> = Vec::new();
     for re in res {
         if recursive_operations(re.sum, re.numbers.clone(), &operation) {
             point_final.push(re);
+        } else {
+            point_secod.push(re);
         }
     }
 
@@ -59,7 +60,17 @@ pub fn day_seven() -> i64 {
         sumnya += re.sum;
     }
 
-    sumnya
+    let mut sumnya_dua: i64 = 0;
+    let sec_operation = [add, multiple, concatenate];
+
+    for re in point_secod {
+        if recursive_operations(re.sum, re.numbers.clone(), &sec_operation) {
+            //println!("{}", re.sum);
+            //
+            sumnya_dua += re.sum;
+        }
+    }
+    sumnya + sumnya_dua
 }
 
 #[derive(Debug, Clone)]
@@ -85,6 +96,10 @@ fn add(a: i64, b: i64) -> i64 {
 
 fn multiple(a: i64, b: i64) -> i64 {
     a * b
+}
+
+fn concatenate(a: i64, b: i64) -> i64 {
+    format!("{}{}", a, b).parse::<i64>().unwrap()
 }
 
 fn recursive_operations<F>(target: i64, operations: Vec<i64>, operators: &[F]) -> bool
