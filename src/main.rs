@@ -5,6 +5,7 @@ mod day4;
 mod day5;
 mod day6;
 mod day7;
+mod day8;
 
 fn main() {
     //let ha = day1::day_one();
@@ -32,6 +33,10 @@ fn main() {
     //let six = day6::day_six_chapter_one();
     //println!("{}", six);
 
-    let seven = day7::day_seven();
-    println!("{}", seven);
+    //let seven = day7::day_seven();
+    //println!("{}", seven);
+    //
+
+    let eight = day8::day_eight();
+    println!("{}", eight);
 }
