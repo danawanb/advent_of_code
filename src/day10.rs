@@ -38,7 +38,49 @@ pub fn day_ten() -> usize {
     }
 
     println!("{}", total);
+
+    let mut total2 = 0;
+
+    for (id, i) in matrix.iter().enumerate() {
+        for (idj, _) in i.iter().enumerate() {
+            if matrix[id][idj] == 0 {
+                total2 += search_trail_2(idj, id, &matrix);
+            }
+        }
+    }
+
+    println!("{}", total2);
+
     6
+}
+
+fn search_trail_2(x: usize, y: usize, matrix: &Vec<Vec<i32>>) -> usize {
+    let height = matrix[y][x];
+    if height == 9 {
+        return 1;
+    }
+    let mut score = 0;
+
+    //kiri
+    if x > 0 && matrix[y][x - 1] == height + 1 {
+        score += search_trail_2(x - 1, y, matrix);
+    }
+
+    //atas
+    if y > 0 && matrix[y - 1][x] == height + 1 {
+        score += search_trail_2(x, y - 1, matrix)
+    }
+
+    //kanan
+    if x < matrix[y].len() - 1 && matrix[y][x + 1] == height + 1 {
+        score += search_trail_2(x + 1, y, matrix)
+    }
+
+    //bawah
+    if y < matrix.len() - 1 && matrix[y + 1][x] == height + 1 {
+        score += search_trail_2(x, y + 1, matrix)
+    }
+    score
 }
 
 fn search_trail(
