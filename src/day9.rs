@@ -30,6 +30,8 @@ pub fn day_ninex() -> usize {
             .collect();
     }
 
+    let inputxx = inputx.clone();
+
     println!("{:?}", inputx);
 
     let mut head = 0;
@@ -54,5 +56,6 @@ pub fn day_ninex() -> usize {
         }
     }
 
+    //todo chapter 2
     total
 }
