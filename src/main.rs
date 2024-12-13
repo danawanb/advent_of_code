@@ -1,6 +1,7 @@
 mod day1;
 mod day10;
 mod day11;
+mod day12;
 mod day2;
 mod day3;
 mod day4;
@@ -51,6 +52,10 @@ fn main() {
     //println!("{}", ten);
     //
 
-    let evelen = day11::day_eleven();
-    println!("{}", evelen);
+    //let evelen = day11::day_eleven();
+    //println!("{}", evelen);
+    //
+
+    let tweleve = day12::day_tweleve();
+    println!("{}", tweleve);
 }
