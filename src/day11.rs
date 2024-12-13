@@ -1,4 +1,5 @@
-use std::{fs, usize};
+use cached::proc_macro::cached;
+use std::fs;
 
 pub fn day_eleven() -> usize {
     //let txt = fs::read_to_string("./src/day11_dummy.txt");
@@ -12,9 +13,11 @@ pub fn day_eleven() -> usize {
             .collect();
     }
 
+    let numy = numx.clone();
     //println!("{:?}", numx);
     //let res = blinking(numx);
 
+    let now1 = std::time::Instant::now();
     let mut res = Vec::new();
     res = blinking_1(numx);
     //println!("{:?}", res);
@@ -24,8 +27,11 @@ pub fn day_eleven() -> usize {
         //println!("{:?}", res);
     }
 
-    println!("part 1 {:?}", res.len());
+    println!("part 1 {} ({:?})", res.len(), now1.elapsed());
 
+    let now = std::time::Instant::now();
+    let p2 = numy.iter().map(|n| blink(*n, 75)).sum::<usize>();
+    println!("part 2: {} ({:?})", p2, now.elapsed());
     66
 }
 
@@ -63,4 +69,23 @@ fn concat(vec: &[usize]) -> usize {
         acc += elem;
     }
     acc
+}
+
+#[cached]
+fn blink(number: usize, remaining: usize) -> usize {
+    if remaining == 0 {
+        return 1;
+    }
+
+    let s = number.to_string();
+    if number == 0 {
+        blink(1, remaining - 1)
+    } else if s.len() % 2 == 0 {
+        let half = s.len() / 2;
+        let left = s[..half].parse::<usize>().unwrap();
+        let right = s[half..].parse::<usize>().unwrap();
+        blink(left, remaining - 1) + blink(right, remaining - 1)
+    } else {
+        blink(number * 2024, remaining - 1)
+    }
 }
