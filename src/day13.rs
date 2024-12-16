@@ -160,7 +160,7 @@ impl FixClaw {
             return None;
         }
         let pb = (rx - (pa * ax)) / bx;
-        Some(pa as usize * 3 + pb as usize * 4)
+        Some((pa as usize * 3) + (pb as usize * 1))
     }
 }
 
