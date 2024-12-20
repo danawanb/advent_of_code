@@ -1,5 +1,10 @@
 use core::panic;
-use std::{cmp::Reverse, collections::BinaryHeap, fs, ops::Add};
+use std::{
+    cmp::Reverse,
+    collections::{BinaryHeap, HashSet},
+    fs,
+    ops::Add,
+};
 
 pub fn day_sixteen() -> usize {
     //let txt = fs::read_to_string("./src/day16_dummy.txt");
@@ -8,7 +13,8 @@ pub fn day_sixteen() -> usize {
         let mazex = Maze::parse(x);
         println!("{:?}", mazex);
         let count = mazex.dijkstra();
-        println!("{}", count);
+        let countx = mazex.dijkstra_with_backtrack(count);
+        println!("{}", countx);
         return count;
     }
 
@@ -68,11 +74,13 @@ impl Maze {
             position: self.start,
             direction: Direction::Kanan,
             cost: 0,
+            history: None,
         }));
         while let Some(Reverse(Tile {
             position,
             direction,
             cost,
+            history,
         })) = prio.pop()
         {
             let (row, col) = position;
@@ -104,13 +112,76 @@ impl Maze {
                         position: (next_row, next_col),
                         direction: next_dir,
                         cost: next_cost,
+                        history: None,
                     }));
                 }
             }
         }
         min_cost
     }
+    fn dijkstra_with_backtrack(&self, min_cost: usize) -> usize {
+        let mut to_visit = vec![vec![[min_cost, min_cost]; self.width]; self.height];
+        let mut prio = BinaryHeap::new();
+        let mut tiles = HashSet::new();
+        to_visit[self.start.0][self.start.1][Direction::get_axis(&Direction::Kanan)] = 0;
+        prio.push(Reverse(Tile {
+            position: self.start,
+            direction: Direction::Kanan,
+            cost: 0,
+            history: Some(vec![]),
+        }));
+        while let Some(Reverse(Tile {
+            position,
+            direction,
+            cost,
+            history,
+        })) = prio.pop()
+        {
+            let mut history = history.unwrap();
+            history.push(position);
+
+            let (row, col) = position;
+            if cost > to_visit[row][col][direction.get_axis()] || cost > min_cost {
+                continue;
+            }
+
+            if position == self.end {
+                if cost == min_cost {
+                    tiles.extend(history);
+                }
+
+                continue;
+            }
+            for dir in Direction::ALL {
+                let next_dir = dir;
+                let (next_row, next_col) = position + next_dir;
+                let mut next_cost = cost;
+                if next_dir == direction {
+                    next_cost += 1;
+                } else {
+                    next_dir.rotate();
+                    next_cost += 1001;
+                }
+                if self.matrix[next_row][next_col] == Object::Wall {
+                    continue;
+                }
+
+                if next_cost <= to_visit[next_row][next_col][direction.get_axis()] {
+                    to_visit[next_row][next_col][direction.get_axis()] = next_cost;
+                    prio.push(Reverse(Tile {
+                        position: (next_row, next_col),
+                        direction: next_dir,
+                        cost: next_cost,
+                        history: Some(history.clone()),
+                    }));
+                }
+            }
+        }
+
+        tiles.len()
+    }
 }
+
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 enum Object {
     Empty,
@@ -135,6 +206,7 @@ struct Tile {
     position: (usize, usize),
     direction: Direction,
     cost: usize,
+    history: Option<Vec<(usize, usize)>>,
 }
 #[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
 enum Direction {
@@ -157,6 +229,12 @@ impl Direction {
             Self::Kanan => Self::Bawah,
             Self::Bawah => Self::Kiri,
             Self::Kiri => Self::Atas,
+        }
+    }
+    fn get_axis(&self) -> usize {
+        match self {
+            Self::Atas | Self::Bawah => 0,
+            Self::Kiri | Self::Kanan => 1,
         }
     }
 }
