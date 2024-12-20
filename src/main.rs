@@ -5,6 +5,7 @@ mod day12;
 mod day13;
 mod day14;
 mod day15;
+mod day16;
 mod day2;
 mod day3;
 mod day4;
@@ -69,6 +70,12 @@ fn main() {
     //let fourteen = day14::day_fourteen();
     //println!("{}", fourteen);
 
-    let fifteen = day15::day_fifteen();
-    println!("{}", fifteen);
+    //let fifteen = day15::day_fifteen();
+    //println!("{}", fifteen);
+
+    //let fifteenx = day15::day_fifteen_2();
+    //println!("{}", fifteenx);
+
+    let sixteen = day16::day_sixteen();
+    println!("{}", sixteen);
 }
