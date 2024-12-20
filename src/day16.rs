@@ -1,3 +1,4 @@
+use core::panic;
 use std::{cmp::Reverse, collections::BinaryHeap, fs, ops::Add};
 
 pub fn day_sixteen() -> usize {
@@ -125,7 +126,7 @@ impl From<char> for Object {
             '#' => Self::Wall,
             'S' => Self::Start,
             'E' => Self::End,
-            _ => panic!("Please remove {} from your map", value),
+            _ => panic!("value tidak ada {:?}", value),
         }
     }
 }
