@@ -77,8 +77,8 @@ fn main() {
     //let fifteenx = day15::day_fifteen_2();
     //println!("{}", fifteenx);
 
-    let sixteen = day16::day_sixteen();
-    println!("{}", sixteen);
+    //let sixteen = day16::day_sixteen();
+    //println!("{}", sixteen);
 
     let day_seventeen = day17::day_seventeen();
     println!("{}", day_seventeen);
