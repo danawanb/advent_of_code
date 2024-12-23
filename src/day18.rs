@@ -32,16 +32,24 @@ pub fn day_eighteen() -> usize {
         }
     }
 
-    for grid in &gridx {
-        println!("{:?}", grid);
-    }
-
     let start = Coord { x: 0, y: 0 };
     let end = Coord { x: 70, y: 70 };
 
     let mut stepx = 0;
-    if let Some(steps) = bfs(&gridx, start, end, '#') {
-        stepx = steps;
+
+    //part1
+    //if let Some(steps) = bfs(&gridx, start, end, '#') {
+    //    stepx = steps;
+    //}
+
+    //part2
+    for (_, cor) in coordx.iter().enumerate() {
+        gridx[cor.y][cor.x] = '#';
+
+        if !bfs2(&gridx, Coord { x: 0, y: 0 }, Coord { x: 70, y: 70 }, '#') {
+            println!("{} {}", cor.x, cor.y);
+            return 0;
+        }
     }
 
     stepx
@@ -92,4 +100,37 @@ fn bfs(grid: &Vec<Vec<char>>, start: Coord, end: Coord, wall: char) -> Option<us
     }
 
     None
+}
+
+fn bfs2(grid: &Vec<Vec<char>>, start: Coord, end: Coord, wall: char) -> bool {
+    let mut queue: VecDeque<Coord> = VecDeque::new();
+    let mut seen: Vec<Vec<bool>> = vec![vec![false; grid[0].len()]; grid.len()];
+
+    queue.push_back(start);
+    seen[start.y][start.x] = true;
+
+    while let Some(curr) = queue.pop_front() {
+        if curr.x == end.x && curr.y == end.y {
+            return true;
+        }
+
+        for dir in &DIRECTION {
+            let nx = curr.x as i32 + dir[0];
+            let ny = curr.y as i32 + dir[1];
+
+            if nx >= 0 && nx < grid[0].len() as i32 && ny >= 0 && ny < grid.len() as i32 {
+                let next = Coord {
+                    x: nx as usize,
+                    y: ny as usize,
+                };
+
+                if !seen[next.y][next.x] && grid[next.y][next.x] != wall {
+                    seen[next.y][next.x] = true;
+                    queue.push_back(next);
+                }
+            }
+        }
+    }
+
+    false
 }
