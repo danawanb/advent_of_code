@@ -7,6 +7,7 @@ mod day14;
 mod day15;
 mod day16;
 mod day17;
+mod day18;
 mod day2;
 mod day3;
 mod day4;
@@ -80,6 +81,9 @@ fn main() {
     //let sixteen = day16::day_sixteen();
     //println!("{}", sixteen);
 
-    let day_seventeen = day17::day_seventeen();
-    println!("{}", day_seventeen);
+    //let day_seventeen = day17::day_seventeen();
+    //println!("{}", day_seventeen);
+
+    let eighteen = day18::day_eighteen();
+    println!("{}", eighteen);
 }
