@@ -41,8 +41,10 @@ fn main() {
     //let five = day5::day_five_chapter_one();
     //println!("{}", five);
 
-    //let six = day6::day_six_chapter_one();
-    //println!("{}", six);
+    let six = day6::day_six_chapter_one();
+    let six2 = day6::day_six_chapter_two();
+    let six3 = day6::day_six_chapter_onex();
+    println!("{} {} {}", six, six2, six3);
 
     //let seven = day7::day_seven();
     //println!("{}", seven);
@@ -88,6 +90,6 @@ fn main() {
     //let eighteen = day18::day_eighteen();
     //println!("{}", eighteen);
 
-    let nineth = day19::day_nineteen();
-    println!("{}", nineth);
+    //let nineth = day19::day_nineteen();
+    //println!("{}", nineth);
 }
